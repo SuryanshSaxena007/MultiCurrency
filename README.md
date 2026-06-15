@@ -62,32 +62,34 @@ cd frontend && npm install && npm run build
 The repo includes:
 
 - `.github/workflows/ci.yml` for test/build/compose validation.
-- `railway.json` for Railway API + Postgres deployment.
+- `railway.json` for Railway API deployment.
 - `frontend/vercel.json` for Vercel frontend builds.
 - Dockerfiles for API and web artifacts.
 
 Public deployment URL: not provisioned from this local environment because publishing requires account credentials. Use this split deployment path:
 
-**Backend on Railway:**
+**Backend on Railway (SQLite on a persistent volume):**
 
 1. Push the repository to GitHub.
 2. In Railway, create a project from the GitHub repo. It auto-detects `railway.json` and builds `backend/Dockerfile`.
-3. Add a Postgres plugin to the same Railway project.
-4. In the API service env vars, set `WALLET_DATABASE_URL` to `${{Postgres.DATABASE_URL}}` (Railway template reference — the app auto-rewrites `postgresql://` to the SQLAlchemy `postgresql+psycopg://` form).
-5. Set `WALLET_JWT_SECRET` to a long random value and `WALLET_CORS_ORIGINS` to the Vercel frontend URL.
-6. Railway sets `PORT` automatically; the Dockerfile honours it.
+3. In the API service → **Settings → Volumes**, add a volume mounted at `/data` (default size is fine).
+4. In **Variables**, set:
+   - `WALLET_DATABASE_URL` = `sqlite:////data/wallet.db` (four slashes — absolute path)
+   - `WALLET_JWT_SECRET` = a long random value (`openssl rand -hex 32`)
+   - `WALLET_CORS_ORIGINS` = the Vercel frontend URL (use `*` temporarily before Vercel exists)
+5. Railway sets `PORT` automatically; the Dockerfile honours it. The volume keeps `wallet.db` across redeploys.
 
 **Frontend on Vercel:**
 
-7. In Vercel, import the same GitHub repo with root directory `frontend`.
-8. Set `VITE_API_URL` to the Railway public URL (for example `https://wallet-api.up.railway.app`).
-9. Redeploy after URLs are known and update `WALLET_CORS_ORIGINS` on Railway with the final Vercel URL.
+6. In Vercel, import the same GitHub repo with root directory `frontend`.
+7. Set `VITE_API_URL` to the Railway public URL (for example `https://wallet-api.up.railway.app`).
+8. Redeploy after URLs are known and update `WALLET_CORS_ORIGINS` on Railway with the final Vercel URL.
 
 Deployment environment variables:
 
 | Platform | Variable | Required | Notes |
 |---|---|---:|---|
-| Railway API | `WALLET_DATABASE_URL` | yes | Set to `${{Postgres.DATABASE_URL}}`; app normalises the driver. |
+| Railway API | `WALLET_DATABASE_URL` | yes | `sqlite:////data/wallet.db` paired with a `/data` volume mount. |
 | Railway API | `WALLET_JWT_SECRET` | yes | Long random string; never commit a real value. |
 | Railway API | `WALLET_CORS_ORIGINS` | yes | Must include the Vercel frontend URL. |
 | Railway API | `WALLET_ENABLE_EXTERNAL_RATES` | no | Defaults to enabled; keep enabled for provider refresh. |
