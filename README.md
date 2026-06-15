@@ -1,6 +1,15 @@
 # Multi-Currency Wallet Platform
 
-Production-minded wallet challenge implementation with FastAPI, PostgreSQL, React and Docker Compose.
+Production-minded wallet challenge implementation with FastAPI, SQLAlchemy, React and Docker Compose.
+
+## Live deployment
+
+- Web: https://multi-currency-psi.vercel.app
+- API: https://multicurrency-production.up.railway.app
+- API docs: https://multicurrency-production.up.railway.app/docs
+- Health: https://multicurrency-production.up.railway.app/health
+
+Backend runs on Railway with a persistent volume backing SQLite; frontend is built and served by Vercel pointing at the Railway API via `VITE_API_URL`.
 
 ## Features
 
