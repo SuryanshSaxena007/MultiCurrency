@@ -62,8 +62,7 @@ cd frontend && npm install && npm run build
 The repo includes:
 
 - `.github/workflows/ci.yml` for test/build/compose validation.
-- `railway.json` for Railway API + Postgres deployment (primary).
-- `render.yaml` for Render API + Postgres deployment (alternative).
+- `railway.json` for Railway API + Postgres deployment.
 - `frontend/vercel.json` for Vercel frontend builds.
 - Dockerfiles for API and web artifacts.
 

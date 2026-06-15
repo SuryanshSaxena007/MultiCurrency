@@ -4,7 +4,7 @@
 
 The platform is split into a FastAPI API, a React/Vite web UI and PostgreSQL. The API owns authentication, wallet balances, exchange snapshots and transaction history. The frontend calls the API directly with a bearer token.
 
-Deployment is intended as a split platform: the API and PostgreSQL run on Render, while the static React/Vite frontend runs on Vercel with `VITE_API_URL` pointing at the Render API.
+Deployment is intended as a split platform: the API and PostgreSQL run on Railway, while the static React/Vite frontend runs on Vercel with `VITE_API_URL` pointing at the Railway API.
 
 ## Domain model
 
