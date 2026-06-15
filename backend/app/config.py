@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -18,6 +18,13 @@ class Settings(BaseSettings):
     exchange_provider_url: str = "https://api.frankfurter.app/latest?from=USD"
     exchange_refresh_seconds: int = 3600
     enable_external_rates: bool = True
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def normalize_postgres_url(cls, value: str) -> str:
+        if value and value.startswith("postgresql://"):
+            return "postgresql+psycopg://" + value[len("postgresql://"):]
+        return value
 
     @property
     def cors_origin_list(self) -> list[str]:
