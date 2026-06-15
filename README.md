@@ -62,14 +62,14 @@ cd frontend && npm install && npm run build
 The repo includes:
 
 - `.github/workflows/ci.yml` for test/build/compose validation and an optional Render deploy hook.
-- `infra/render.yaml` for a Render API + Postgres blueprint.
+- `render.yaml` for a Render API + Postgres blueprint (must live at repo root for Render).
 - `frontend/vercel.json` for Vercel frontend builds.
 - Dockerfiles for API and web artifacts.
 
 Public deployment URL: not provisioned from this local environment because publishing requires account credentials. Use this split deployment path:
 
 1. Push the repository to GitHub.
-2. In Render, create a blueprint from `infra/render.yaml`.
+2. In Render, create a blueprint; it auto-detects `render.yaml` at repo root.
 3. In Render, set `WALLET_CORS_ORIGINS` to the final Vercel URL after the frontend exists.
 4. In Vercel, import the same GitHub repository with root directory `frontend`.
 5. In Vercel, set `VITE_API_URL` to the Render API URL, for example `https://wallet-api.onrender.com`.
