@@ -63,7 +63,7 @@ The repo includes:
 
 - `.github/workflows/ci.yml` for test/build/compose validation.
 - `railway.json` for Railway API deployment.
-- `frontend/vercel.json` for Vercel frontend builds.
+- `vercel.json` (repo root) for the Vercel monorepo build that targets `frontend/`.
 - Dockerfiles for API and web artifacts.
 
 Public deployment URL: not provisioned from this local environment because publishing requires account credentials. Use this split deployment path:
