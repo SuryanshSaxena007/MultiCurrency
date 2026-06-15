@@ -13,3 +13,4 @@ dist/
 .vite/
 *.tsbuildinfo
 frontend/.env.local
+.omo/
