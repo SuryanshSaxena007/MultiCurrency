@@ -1,0 +1,15 @@
+.DS_Store
+.env
+*.pyc
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+wallet.db
+htmlcov/
+.coverage
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+frontend/.env.local
